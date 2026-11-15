@@ -1,0 +1,25 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Testimonials{% endblock %}
+{% block heading %}Testimonials{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel__head"><h2>All reviews</h2><span class="pill">{{ testimonials|length }}</span></div>
+  <div class="table-wrap"><table class="dtable">
+    <thead><tr><th>Name</th><th>Review</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for t in testimonials reversed %}
+      <tr>
+        <td data-label="Name">{{ t.name }}</td>
+        <td data-label="Review" class="clip">{{ t.message|truncatewords:20 }}</td>
+        <td data-label="Submitted">{{ t.created_at|date:"M d, Y H:i" }}</td>
+        <td data-label="Status">{% if t.approved %}<span class="pill pill--ok">Approved</span>{% else %}<span class="pill pill--wait">Pending</span>{% endif %}</td>
+        <td class="actions"><span class="row-actions">
+          {% if not t.approved %}<form class="inline-form" method="post" action="{% url 'approve_testimonial' t.id %}">{% csrf_token %}<button class="btn btn--primary btn--sm" type="submit"><svg aria-hidden="true"><use href="#i-check"/></svg>Approve</button></form>{% endif %}
+          <form class="inline-form" method="post" action="{% url 'delete_testimonial' t.id %}" data-confirm="Delete this review?">{% csrf_token %}<button class="btn btn--danger btn--sm" type="submit"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete</button></form>
+        </span></td>
+      </tr>
+      {% empty %}<tr><td colspan="5" class="empty-row">No reviews yet.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endblock %}

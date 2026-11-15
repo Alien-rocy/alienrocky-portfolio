@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Testimonials | Alien_R</title>
+  <link rel="stylesheet" href="{% static 'assets/Styles.css' %}">
+</head>
+<body>
+  <header class="navbar">
+    <a href="/" class="logo">Alien_R</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'Projects' %}">Projects</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="all-testimonials">
+      <h1>All Testimonials</h1>
+      {% for testimonial in testimonials %}
+        <div class="testimonial-card">
+          <p>“{{ testimonial.message }}”</p>
+          <h4>{{ testimonial.name }}</h4>
+          <span>{{ testimonial.created_at|date:"M d, Y" }}</span>
+        </div>
+      {% empty %}
+        <p>No testimonials yet.</p>
+      {% endfor %}
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 AlienRocky. All rights reserved</p>
+  </footer>
+</body>
+</html>

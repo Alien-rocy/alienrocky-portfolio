@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"{{ site.name }}","alternateName":"AlienR","jobTitle":"Software Engineer","url":"{{ site.url }}","sameAs":["{{ site.github }}","{{ site.x }}"{% if site.linkedin %},"{{ site.linkedin }}"{% endif %}]}
+</script>
+<link rel="preload" as="image" type="image/webp" href="{% static 'img/alienr-portrait-400.webp' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HOME -->
+<section class="hero" id="home" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="label label--blue">Software Engineer</p>
+      <h1 id="hero-title">Hi, I&rsquo;m <em>Agbaje Peter Oluwatimilehin.</em></h1>
+      <p class="hero__role">Software Engineer | Backend &amp; Web Developer</p>
+      <p class="hero__statement">I turn ideas into software that solves real problems.</p>
+      <p class="hero__desc">I build web applications, backend systems, and digital products with a focus on functionality, usability, and impact. I&rsquo;m passionate about clean code, scalable solutions, and creating products that make life easier.</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#projects">View My Projects <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--ghost" href="#contact">Get In Touch</a>
+      </div>
+      <ul class="hero__social" aria-label="Social links">
+        <li><a class="icon-btn" href="{{ site.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg aria-hidden="true"><use href="#i-github"/></svg></a></li>
+        {% if site.linkedin %}<li><a class="icon-btn" href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg aria-hidden="true"><use href="#i-linkedin"/></svg></a></li>{% endif %}
+        <li><a class="icon-btn" href="{{ site.x }}" target="_blank" rel="noopener noreferrer" aria-label="X"><svg aria-hidden="true"><use href="#i-x"/></svg></a></li>
+        <li><a class="icon-btn" href="mailto:{{ site.email }}" aria-label="Email"><svg aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+      </ul>
+    </div>
+
+    <figure class="portrait" style="margin-block:0">
+      <div class="portrait__frame">
+        <picture>
+          <source type="image/webp" srcset="{% static 'img/alienr-portrait-400.webp' %} 400w, {% static 'img/alienr-portrait-629.webp' %} 629w sizes="(max-width: 899px) 320px, 380px">
+          <img src="{% static 'img/alienr-portrait-400.jpg' %}" width="400" height="500" alt="Portrait of Agbaje Peter Oluwatimilehin, smiling in a red plaid shirt and cap" fetchpriority="high" decoding="async">
+        </picture>
+      </div>
+      <figcaption class="portrait__chip"><i aria-hidden="true"></i>Coding since 16</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section class="stack" aria-labelledby="stack-title">
+  <div class="wrap">
+    <h2 class="sr-only" id="stack-title">Technology stack</h2>
+    <div class="stack__grid">
+      {% for group, gicon, items in stack_groups %}
+      <article class="stack__group reveal" style="--d: {{ forloop.counter0 }}00ms">
+        <header class="stack__head">
+          <span class="stack__icon" aria-hidden="true"><svg><use href="#{{ gicon }}"/></svg></span>
+          <h3>{{ group }}</h3>
+        </header>
+        <ul class="stack__list">
+          {% for label, slug, icon in items %}
+          <li class="tech"><span class="tech__icon" aria-hidden="true">{% if slug %}<img src="https://cdn.jsdelivr.net/npm/simple-icons@11.14.0/icons/{{ slug }}.svg" alt="" width="18" height="18" loading="lazy" decoding="async" data-fallback-icon="{{ icon }}">{% else %}<b class="tech__mono">DRF</b>{% endif %}</span><span>{{ label }}</span></li>
+          {% endfor %}
+        </ul>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" aria-labelledby="projects-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label label--blue">Featured projects</p>
+      <h2 id="projects-title">Real Solutions. Real Impact.</h2>
+      <p>Products at different stages, shown as they actually are. Open any project for the full details.</p>
+    </div>
+
+    {% if featured_projects %}
+    <div class="projects">
+      {% for p in featured_projects %}
+      <article class="card card--link reveal" style="--d: {{ forloop.counter0 }}00ms">
+        <div class="card__media">
+          {% if p.status %}<span class="status status--{{ p.status_key }}">{{ p.status }}</span>{% endif %}
+          {% if p.image %}
+            <img src="{{ p.image.url }}" alt="Screenshot of {{ p.title }}" width="800" height="500" loading="lazy" decoding="async">
+          {% else %}
+            <div class="placeholder" role="img" aria-label="{{ p.title }} preview, screenshot not added yet">
+              <b>{{ forloop.counter|stringformat:"02d" }}</b>
+              <small>Screenshot coming soon</small>
+            </div>
+          {% endif %}
+        </div>
+        <div class="card__body">
+          {% if p.category %}<p class="label">{{ p.category }}</p>{% endif %}
+          <h3 class="card__title"><a class="card__stretch" href="{% url 'project_detail' p.pk %}">{{ p.title }}</a></h3>
+          <p class="card__summary">{{ p.description|truncatewords:34 }}</p>
+          {% if p.stack_list %}<ul class="card__tags" aria-label="Technologies">{% for t in p.stack_list %}<li class="tag">{{ t }}</li>{% endfor %}</ul>{% endif %}
+          <div class="card__actions">
+            <span class="link-arrow">View project <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+            {% if p.live_demo %}<a class="link-quiet link-quiet--top" href="{{ p.live_demo }}" target="_blank" rel="noopener noreferrer">Live demo <svg aria-hidden="true"><use href="#i-external"/></svg></a>{% endif %}
+            {% if p.github_link %}<a class="link-quiet link-quiet--top" href="{{ p.github_link }}" target="_blank" rel="noopener noreferrer">GitHub <svg aria-hidden="true"><use href="#i-external"/></svg></a>{% endif %}
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">No featured projects yet. Tick &ldquo;Show on the home page&rdquo; on a project in the dashboard.</p>
+    {% endif %}
+
+    <p class="center" style="margin-top:2rem"><a class="btn btn--ghost" href="{% url 'Projects' %}">Browse all projects &amp; reviews <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section section--soft" id="about" aria-labelledby="about-title">
+  <div class="wrap about">
+    <div class="reveal">
+      <p class="label label--blue">About</p>
+      <h2 id="about-title">I&rsquo;m a Software Engineer with a problem-solving mindset.</h2>
+    </div>
+    <div class="reveal" style="--d: 100ms">
+      <div class="about__text">
+        <p>I started coding at 16 and have kept going since. What hooked me was the moment a problem on paper turns into something people can actually use.</p>
+        <p>Most of what I know comes from building: practical web applications, projects with teammates, and products like StudentPal, Camply and ServeFlow. I&rsquo;m drawn to the backend, to APIs, data models, and the logic that has to keep working once real people depend on it.</p>
+        <p>I&rsquo;m still strengthening my foundation, especially software architecture and relational database design. I&rsquo;d rather understand why something works than copy something that does. The goal stays the same: take an idea, find the real problem inside it, and turn it into useful software.</p>
+      </div>
+      <dl class="facts">
+        <div><dt>Coding since</dt><dd>Age 16</dd></div>
+        <div><dt>Focus</dt><dd>Backend &amp; APIs</dd></div>
+        <div><dt>Core stack</dt><dd>Django, DRF</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills" aria-labelledby="skills-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label label--blue">Skills &amp; technical stack</p>
+      <h2 id="skills-title">What I build with.</h2>
+      <p>Grouped by what I use them for. No percentage bars, just the tools I work with.</p>
+    </div>
+    <div class="skills">
+      {% for num, title, items in skill_groups %}
+      <article class="skill reveal" style="--d: {{ forloop.counter0 }}00ms">
+        <div class="skill__icon" aria-hidden="true">
+          <svg><use href="{% if num == '01' %}#i-server{% elif num == '02' %}#i-code{% elif num == '03' %}#i-db{% elif num == '04' %}#i-branch{% else %}#i-cloud{% endif %}"/></svg>
+        </div>
+        <h3>{{ title }}</h3>
+        <ul>{% for i in items %}<li>{{ i }}</li>{% endfor %}</ul>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="section section--soft" id="achievements" aria-labelledby="ach-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label label--blue">Experience &amp; achievements</p>
+      <h2 id="ach-title">Teams, competitions and milestones.</h2>
+    </div>
+    <ol class="timeline" style="list-style:none;margin:0;padding:0">
+      {% for a in achievements %}
+      <li class="entry reveal">
+        <div class="entry__card">
+          {% if a.date or a.role or a.badge %}<div class="entry__meta">
+            {% if a.date %}<span class="label">{{ a.date }}</span>{% endif %}
+            {% if a.role %}<span class="label label--blue">{{ a.role }}</span>{% endif %}
+            {% if a.badge %}<span class="badge">{{ a.badge }}</span>{% endif %}
+          </div>{% endif %}
+          <h3>{{ a.title }}</h3>
+          <p class="entry__org">{{ a.org }}</p>
+          <p class="entry__text">{{ a.text }}</p>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact">
+    <div class="reveal">
+      <p class="label label--blue">Contact</p>
+      <h2 id="contact-title">Have a project in mind? Let&rsquo;s build it.</h2>
+      <p class="contact__lead">I&rsquo;m open to freelance opportunities, collaborations, and software engineering opportunities. Feel free to reach out.</p>
+      <div class="contact__links">
+        <a href="mailto:{{ site.email }}"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>{{ site.email }}</span></a>
+        <a href="{{ site.github }}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg><span>GitHub</span></a>
+        {% if site.linkedin %}<a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-linkedin"/></svg><span>LinkedIn</span></a>{% endif %}
+        <a href="{{ site.x }}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-x"/></svg><span>X</span></a>
+        <a href="{{ site.whatsapp }}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-chat"/></svg><span>WhatsApp</span></a>
+      </div>
+    </div>
+
+    <form class="form reveal" id="contact-form" action="{% url 'contact' %}" method="post" novalidate style="--d: 100ms">
+      {% csrf_token %}
+      <div class="form__row">
+        <div class="field">
+          <label for="c-name">Name</label>
+          <input id="c-name" name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name" required aria-describedby="c-name-err">
+          <p class="field__error" id="c-name-err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@email.com" required aria-describedby="c-email-err">
+          <p class="field__error" id="c-email-err" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="c-message">Message</label>
+        <textarea id="c-message" name="message" rows="5" placeholder="Tell me a little about what you want to build." required aria-describedby="c-message-err"></textarea>
+        <p class="field__error" id="c-message-err" aria-live="polite"></p>
+      </div>
+      <div class="form__foot">
+        <button class="btn btn--primary" type="submit" id="contact-submit">Send message <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <p class="form__status" id="contact-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

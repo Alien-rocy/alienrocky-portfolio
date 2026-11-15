@@ -1,0 +1,25 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+  <title>Log in | AlienR</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <script>(function(){try{var t=localStorage.getItem('theme');if(!t&&matchMedia('(prefers-color-scheme: dark)').matches)t='dark';if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&amp;f[]=general-sans@400,500&amp;display=swap">
+  <link rel="stylesheet" href="{% static 'assets/portfolio.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/dashboard.css' %}">
+</head>
+<body class="dash">
+  <main class="login">
+    <form class="login__card" method="post" novalidate>
+      {% csrf_token %}
+      <a class="wordmark" href="{% url 'index' %}">Alien<span>R</span></a>
+      <h1>Log in to your dashboard</h1>
+      {% if error %}<p class="login__error" role="alert">{{ error }}</p>{% endif %}
+      <div class="field"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" required autofocus></div>
+      <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn--primary" type="submit">Log in</button>
+    </form>
+  </main>
+</body>
+</html>

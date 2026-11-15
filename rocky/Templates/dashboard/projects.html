@@ -1,0 +1,175 @@
+
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block heading %}Projects{% endblock %}
+
+{% block head_actions %}
+<a class="btn btn--primary btn--sm" href="{% url 'add_project' %}">
+    <svg aria-hidden="true">
+        <use href="#i-plus"/>
+    </svg>
+    Add project
+</a>
+{% endblock %}
+
+
+{% block content %}
+
+<section class="panel">
+<<<<<<< HEAD
+  <div class="panel__head"><h2>All projects</h2><span class="pill">{{ projects|length }}</span></div>
+  <div class="table-wrap"><table class="dtable">
+    <thead><tr><th>Preview</th><th>Title</th><th>Category</th><th></th></tr></thead>
+    <tbody>
+      {% for project in projects reversed %}
+      <tr>
+        <td data-label="Preview">{% if project.image %}<img class="thumb" src="{{ project.image.url }}" alt="" loading="lazy">{% else %}<span class="pill">No image</span>{% endif %}</td>
+        <td data-label="Title">{{ project.title }}{% if project.featured %} <span class="pill">Featured</span>{% endif %}</td>
+        <td data-label="Category" class="clip">{{ project.category|default_if_none:"" }}</td>
+        <td class="actions"><span class="row-actions">
+          <a class="btn btn--ghost btn--sm" href="{% url 'edit_project' project.pk %}"><svg aria-hidden="true"><use href="#i-edit"/></svg>Edit</a>
+          <form class="inline-form" method="post" action="{% url 'delete_project' project.pk %}" data-confirm="Delete “{{ project.title }}”? This cannot be undone.">{% csrf_token %}<button class="btn btn--danger btn--sm" type="submit"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete</button></form>
+        </span></td>
+      </tr>
+      {% empty %}<tr><td colspan="4" class="empty-row">No projects yet.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+=======
+
+    <div class="panel__head">
+        <h2>All projects</h2>
+        <span class="pill">{{ projects|length }}</span>
+    </div>
+
+    <div class="table-wrap">
+
+        <table class="dtable">
+
+            <thead>
+                <tr>
+                    <th>Preview</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for project in projects reversed %}
+
+                <tr>
+
+                    <!-- Project Preview -->
+                    <td data-label="Preview">
+
+                        {% if project.image %}
+
+                            <img
+                                class="thumb"
+                                src="{{ project.image.url }}"
+                                alt="{{ project.title }}"
+                                loading="lazy"
+                            >
+
+                        {% else %}
+
+                            <span class="pill">No image</span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- Project Title -->
+                    <td data-label="Title">
+
+                        {{ project.title }}
+
+                        {% if project.featured %}
+                            <span class="pill">Featured</span>
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- Project Category -->
+                    <td data-label="Category" class="clip">
+
+                        {{ project.category|default_if_none:"" }}
+
+                    </td>
+
+
+                    <!-- Project Actions -->
+                    <td class="actions">
+
+                        <span class="row-actions">
+
+                            <!-- Edit Project -->
+                            <a
+                                class="btn btn--ghost btn--sm"
+                                href="{% url 'edit_project' project.pk %}"
+                            >
+
+                                <svg aria-hidden="true">
+                                    <use href="#i-edit"/>
+                                </svg>
+
+                                Edit
+
+                            </a>
+
+
+                            <!-- Delete Project -->
+                            <form
+                                method="POST"
+                                action="{% url 'delete_project' project.pk %}"
+                                onsubmit="return confirm('Are you sure you want to delete this project? This action cannot be undone.');"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="btn btn--danger btn--sm"
+                                >
+
+                                    <svg aria-hidden="true">
+                                        <use href="#i-trash"/>
+                                    </svg>
+
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4" class="empty-row">
+                        No projects yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+>>>>>>> 21141a841a24d451fbb4034ee68ab02cee9b3dd9
+</section>
+
+{% endblock %}

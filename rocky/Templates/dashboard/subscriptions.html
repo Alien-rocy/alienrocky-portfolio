@@ -1,0 +1,20 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Subscriptions{% endblock %}
+{% block heading %}Subscriptions{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel__head"><h2>Subscribers</h2><span class="pill">{{ subscriptions|length }}</span></div>
+  <div class="table-wrap"><table class="dtable">
+    <thead><tr><th>Email</th><th>Subscribed</th><th></th></tr></thead>
+    <tbody>
+      {% for sub in subscriptions reversed %}
+      <tr>
+        <td data-label="Email">{{ sub.email }}</td>
+        <td data-label="Subscribed">{{ sub.created_at|date:"M d, Y H:i" }}</td>
+        <td class="actions"><form class="inline-form" method="post" action="{% url 'delete_subscription' sub.pk %}" data-confirm="Remove this subscriber?">{% csrf_token %}<button class="btn btn--danger btn--sm" type="submit"><svg aria-hidden="true"><use href="#i-trash"/></svg>Remove</button></form></td>
+      </tr>
+      {% empty %}<tr><td colspan="3" class="empty-row">No subscribers yet.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endblock %}

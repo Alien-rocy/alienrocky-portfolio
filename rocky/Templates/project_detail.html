@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ project.title }} | AlienR{% endblock %}
+{% block description %}{{ project.title }}{% if project.category %}, {{ project.category }}{% endif %}: a project by AlienR.{% endblock %}
+{% block og_title %}{{ project.title }} | AlienR{% endblock %}
+
+{% block content %}
+<article class="section" aria-labelledby="proj-title">
+  <div class="wrap">
+    <p><a class="link-quiet" href="{% url 'index' %}#projects"><svg aria-hidden="true" style="transform:rotate(180deg)"><use href="#i-arrow"/></svg>All projects</a></p>
+    <div class="about" style="margin-top:1rem;align-items:center">
+      <div>
+        <div style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:center">
+          {% if project.status %}<span class="status status--{{ project.status_key }}">{{ project.status }}</span>{% endif %}
+          {% if project.category %}<span class="label">{{ project.category }}</span>{% endif %}
+        </div>
+        <h1 id="proj-title" style="font-size:var(--fs-h2);margin-top:1rem">{{ project.title }}</h1>
+        {% if project.description %}<p style="color:var(--text-2);margin-top:1rem;max-width:56ch">{{ project.description }}</p>{% endif %}
+        {% if project.highlight_list %}
+        <ul class="skill" style="border:0;padding:0;margin-top:1.25rem;display:grid;gap:.6rem;max-width:56ch">
+          {% for h in project.highlight_list %}<li style="display:flex;gap:.6rem;align-items:flex-start;color:var(--text-2)"><span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--blue);margin-top:.6em"></span>{{ h }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+        {% if project.stack_list %}<ul class="card__tags" aria-label="Technologies" style="margin-top:1.25rem">{% for t in project.stack_list %}<li class="tag">{{ t }}</li>{% endfor %}</ul>{% endif %}
+        <div class="hero__cta">
+          {% if project.live_demo %}<a class="btn btn--primary" href="{{ project.live_demo }}" target="_blank" rel="noopener noreferrer">View live demo <svg aria-hidden="true"><use href="#i-external"/></svg></a>{% endif %}
+          {% if project.github_link %}<a class="btn btn--ghost" href="{{ project.github_link }}" target="_blank" rel="noopener noreferrer">GitHub</a>{% endif %}
+          <a class="btn btn--ghost" href="{% url 'index' %}#contact">Discuss a similar project</a>
+        </div>
+      </div>
+      <div class="card" style="box-shadow:var(--shadow-md)">
+        <div class="card__media" style="border-bottom:0">
+          {% if project.image %}<img src="{{ project.image.url }}" alt="Screenshot of {{ project.title }}" width="800" height="500" decoding="async">
+          {% else %}<div class="placeholder" role="img" aria-label="No preview image yet"><small>Screenshot coming soon</small></div>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+{% endblock %}

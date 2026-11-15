@@ -1,0 +1,56 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Overview{% endblock %}
+{% block heading %}Overview{% endblock %}
+{% block head_actions %}<a class="btn btn--primary btn--sm" href="{% url 'add_project' %}"><svg aria-hidden="true"><use href="#i-plus"/></svg>Add project</a>{% endblock %}
+
+{% block content %}
+<div class="stats">
+  <a class="stat" href="{% url 'dashboard_projects_view' %}"><div class="stat__top"><span class="label">Projects</span><svg aria-hidden="true"><use href="#i-folder"/></svg></div><div class="stat__value">{{ projects|length }}</div></a>
+  <a class="stat" href="{% url 'messages' %}"><div class="stat__top"><span class="label">Messages</span><svg aria-hidden="true"><use href="#i-chat"/></svg></div><div class="stat__value">{{ contact_messages|length }}</div></a>
+  <a class="stat" href="{% url 'subscriptions' %}"><div class="stat__top"><span class="label">Subscribers</span><svg aria-hidden="true"><use href="#i-mail"/></svg></div><div class="stat__value">{{ subscriptions|length }}</div></a>
+  <a class="stat" href="{% url 'testimonials' %}"><div class="stat__top"><span class="label">Pending reviews</span><svg aria-hidden="true"><use href="#i-quote"/></svg></div><div class="stat__value">{{ pending_count }}</div></a>
+</div>
+
+<div class="charts" id="dash-charts" data-approved="{{ approved_count }}" data-pending="{{ pending_count }}" data-projects="{{ projects|length }}" data-subs="{{ subscriptions|length }}" data-messages="{{ contact_messages|length }}" data-testimonials="{{ testimonials|length }}">
+  <section class="panel"><div class="panel__head"><h2>Testimonials</h2></div><div class="panel__body"><div class="chart-box"><canvas id="chart-testimonials" role="img" aria-label="Approved versus pending testimonials"></canvas></div></div></section>
+  <section class="panel"><div class="panel__head"><h2>Activity</h2></div><div class="panel__body"><div class="chart-box"><canvas id="chart-activity" role="img" aria-label="Totals by type"></canvas></div></div></section>
+</div>
+
+<section class="panel">
+  <div class="panel__head"><h2>Recent messages</h2><a class="link-arrow" href="{% url 'messages' %}">All messages <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+  <div class="table-wrap"><table class="dtable">
+    <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Received</th><th></th></tr></thead>
+    <tbody>
+      {% for msg in recent_messages %}
+      <tr>
+        <td data-label="Name">{{ msg.name }}</td><td data-label="Email">{{ msg.email }}</td>
+        <td data-label="Message" class="clip">{{ msg.message|truncatewords:12 }}</td>
+        <td data-label="Received">{{ msg.created_at|date:"M d, H:i" }}</td>
+        <td class="actions"><a class="btn btn--ghost btn--sm" href="{% url 'message_detail' msg.pk %}">Open</a></td>
+      </tr>
+      {% empty %}<tr><td colspan="5" class="empty-row">No messages yet.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+
+<section class="panel">
+  <div class="panel__head"><h2>Reviews awaiting approval</h2><a class="link-arrow" href="{% url 'testimonials' %}">All reviews <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+  <div class="table-wrap"><table class="dtable">
+    <thead><tr><th>Name</th><th>Review</th><th>Submitted</th><th></th></tr></thead>
+    <tbody>
+      {% for t in pending_testimonials %}
+      <tr>
+        <td data-label="Name">{{ t.name }}</td><td data-label="Review" class="clip">{{ t.message|truncatewords:15 }}</td>
+        <td data-label="Submitted">{{ t.created_at|date:"M d, H:i" }}</td>
+        <td class="actions"><span class="row-actions">
+          <form class="inline-form" method="post" action="{% url 'approve_testimonial' t.id %}">{% csrf_token %}<button class="btn btn--primary btn--sm" type="submit">Approve</button></form>
+          <form class="inline-form" method="post" action="{% url 'delete_testimonial' t.id %}" data-confirm="Delete this review?">{% csrf_token %}<button class="btn btn--danger btn--sm" type="submit">Delete</button></form>
+        </span></td>
+      </tr>
+      {% empty %}<tr><td colspan="4" class="empty-row">Nothing waiting. All caught up.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>{% endblock %}

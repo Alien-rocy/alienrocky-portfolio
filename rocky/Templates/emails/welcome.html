@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Alien_R</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0a0a0a;
+      color: #ffffff;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #050505;
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #2ecc71;
+      text-align: center;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #2ecc71, #27ae6d);
+      color: #fff !important;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #aaa;
+      text-align: center;
+    }
+    .footer a {
+      color: #2ecc71;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <h1>🚀 Welcome to Alien_R</h1>
+    <p>Hi {{ email }},</p>
+    <p>
+      Thanks for subscribing to the <strong>Alien_R Newsletter</strong>!  
+      You’ll now receive weekly updates on our latest projects and testimonials.
+    </p>
+    <p style="text-align:center;">
+      <a href="https://alienr.com/projects" class="cta-button">Explore Projects</a>
+    </p>
+    <div class="footer">
+      &copy; 2026 Alien_R. All rights reserved.<br>
+      <a href="{{ unsubscribe_url }}">Unsubscribe</a>
+    </div>
+  </div>
+</body>
+</html>

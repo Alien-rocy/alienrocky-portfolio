@@ -1,0 +1,8 @@
+db.sqlite3
+.env
+.venv/
+venv/
+.vscode/
+**/__pycache__/
+*.pyc
+PORTFOLIO_REDESIGN.md

@@ -1,0 +1,25 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Messages{% endblock %}
+{% block heading %}Messages{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel__head"><h2>Contact messages</h2><span class="pill">{{ contact_messages|length }}</span></div>
+  <div class="table-wrap"><table class="dtable">
+    <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Received</th><th></th></tr></thead>
+    <tbody>
+      {% for msg in contact_messages reversed %}
+      <tr>
+        <td data-label="Name">{{ msg.name }}</td>
+        <td data-label="Email"><a href="mailto:{{ msg.email }}">{{ msg.email }}</a></td>
+        <td data-label="Message" class="clip">{{ msg.message|truncatewords:15 }}</td>
+        <td data-label="Received">{{ msg.created_at|date:"M d, Y H:i" }}</td>
+        <td class="actions"><span class="row-actions">
+          <a class="btn btn--ghost btn--sm" href="{% url 'message_detail' msg.pk %}"><svg aria-hidden="true"><use href="#i-eye"/></svg>Open</a>
+          <form class="inline-form" method="post" action="{% url 'delete_message' msg.pk %}" data-confirm="Delete this message?">{% csrf_token %}<button class="btn btn--danger btn--sm" type="submit"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete</button></form>
+        </span></td>
+      </tr>
+      {% empty %}<tr><td colspan="5" class="empty-row">No messages yet.</td></tr>{% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}AlienR | Agbaje Peter Oluwatimilehin, Software Engineer{% endblock %}</title>
+  <meta name="description" content="{% block description %}Agbaje Peter Oluwatimilehin (AlienR) is a software engineer building web applications, backend systems and APIs with Python and Django.{% endblock %}">
+  <meta name="author" content="{{ site.name }}">
+  <link rel="canonical" href="{{ site.url }}{{ request.path }}">
+  <meta name="theme-color" content="#ffffff">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AlienR">
+  <meta property="og:title" content="{% block og_title %}AlienR | Software Engineer, Backend &amp; Web Development{% endblock %}">
+  <meta property="og:description" content="I turn ideas into software that solves real problems.">
+  <meta property="og:url" content="{{ site.url }}{{ request.path }}">
+  <meta property="og:image" content="{{ site.url }}{% static 'img/og-image.jpg' %}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portrait of Agbaje Peter Oluwatimilehin, software engineer">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+        if (t) d.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&amp;f[]=general-sans@400,500&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="{% static 'assets/portfolio.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  {% include "partials/icons.html" %}
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav__inner">
+      <a class="wordmark" href="{% url 'index' %}#home" aria-label="AlienR, home">Alien<span>R</span></a>
+
+      <nav aria-label="Primary">
+        <ul class="nav__links" id="nav-links">
+          <li><a href="{% url 'index' %}#home" data-spy="home">Home</a></li>
+          <li><a href="{% url 'index' %}#projects" data-spy="projects">Projects</a></li>
+          <li><a href="{% url 'index' %}#about" data-spy="about">About</a></li>
+          <li><a href="{% url 'index' %}#skills" data-spy="skills">Skills</a></li>
+          <li><a href="{% url 'index' %}#achievements" data-spy="achievements">Achievements</a></li>
+          <li><a href="{% url 'index' %}#contact" data-spy="contact">Contact</a></li>
+          <li><a class="btn btn--primary nav__cta-mobile" href="{% url 'index' %}#contact">Get in Touch</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="icon-btn icon-btn--outline" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+          <svg class="theme-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+          <svg class="theme-sun" aria-hidden="true" hidden><use href="#i-sun"/></svg>
+        </button>
+        <a class="btn btn--primary btn--sm nav__cta-desktop" href="{% url 'index' %}#contact">Get in Touch</a>
+        <button class="icon-btn icon-btn--outline nav__toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+          <svg class="menu-open" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="menu-close" aria-hidden="true" hidden><use href="#i-close"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__grid">
+        <div>
+          <a class="wordmark" href="{% url 'index' %}#home">Alien<span>R</span></a>
+          <p class="footer__motto">Stay hard. Stay smart. One love.</p>
+        </div>
+        <nav aria-label="Footer">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="{% url 'index' %}#home">Home</a></li>
+            <li><a href="{% url 'index' %}#projects">Projects</a></li>
+            <li><a href="{% url 'index' %}#about">About</a></li>
+            <li><a href="{% url 'index' %}#skills">Skills</a></li>
+            <li><a href="{% url 'index' %}#achievements">Achievements</a></li>
+            <li><a href="{% url 'index' %}#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h4>Elsewhere</h4>
+          <ul>
+            <li><a href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            {% if site.linkedin %}<li><a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>{% endif %}
+            <li><a href="{{ site.x }}" target="_blank" rel="noopener noreferrer">X</a></li>
+            <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><a href="{% url 'Projects' %}">Reviews</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Updates by email</h4>
+          <form class="footer__sub" id="subscribe-form" action="{% url 'subscribe' %}" method="post" novalidate>
+            {% csrf_token %}
+            <label class="sr-only" for="sub-email">Email address</label>
+            <input id="sub-email" type="email" name="email" placeholder="you@email.com" autocomplete="email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+          <p class="footer__msg" id="subscribe-msg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="footer__bar">
+        <p>&copy; {% now "Y" %} Agbaje Peter Oluwatimilehin (AlienR). All rights reserved.</p>
+        <div class="footer__social">
+          <a href="{{ site.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg aria-hidden="true"><use href="#i-github"/></svg></a>
+          {% if site.linkedin %}<a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg aria-hidden="true"><use href="#i-linkedin"/></svg></a>{% endif %}
+          <a href="{{ site.x }}" target="_blank" rel="noopener noreferrer" aria-label="X"><svg aria-hidden="true"><use href="#i-x"/></svg></a>
+          <a href="mailto:{{ site.email }}" aria-label="Email"><svg aria-hidden="true"><use href="#i-mail"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'assets/portfolio.js' %}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

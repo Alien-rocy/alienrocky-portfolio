@@ -1,0 +1,17 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Message from {{ msg.name }}{% endblock %}
+{% block heading %}Message{% endblock %}
+{% block head_actions %}<a class="btn btn--ghost btn--sm" href="{% url 'messages' %}">All messages</a>{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel__head"><h2>{{ msg.name }}</h2><span class="label">{{ msg.created_at|date:"M d, Y H:i" }}</span></div>
+  <div class="panel__body">
+    <div class="msg-meta"><span class="label">From</span><a href="mailto:{{ msg.email }}">{{ msg.email }}</a></div>
+    <p class="msg-body">{{ msg.message }}</p>
+    <div class="dform__actions" style="margin-top:1.5rem">
+      <a class="btn btn--primary" href="mailto:{{ msg.email }}?subject=Re: your message">Reply by email</a>
+      <form class="inline-form" method="post" action="{% url 'delete_message' msg.pk %}" data-confirm="Delete this message?">{% csrf_token %}<button class="btn btn--danger" type="submit"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete</button></form>
+    </div>
+  </div>
+</section>
+{% endblock %}

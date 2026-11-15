@@ -1,0 +1,64 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}Dashboard{% endblock %} | AlienR</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <script>
+    (function () { var d = document.documentElement; d.classList.add('js');
+      try { var t = localStorage.getItem('theme'); if (!t && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark'; if (t) d.setAttribute('data-theme', t); } catch (e) {} })();
+  </script>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&amp;f[]=general-sans@400,500&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="{% static 'assets/portfolio.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/dashboard.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="dash">
+  {% include "partials/icons.html" %}
+  {% with page=request.resolver_match.url_name %}
+  <div class="dash-shell">
+    <aside class="dash-side" id="dash-side" aria-label="Dashboard">
+      <a class="wordmark" href="{% url 'dashboard_home' %}">Alien<span>R</span></a>
+      <nav class="dash-nav" aria-label="Dashboard sections">
+        <a href="{% url 'dashboard_home' %}" {% if page == 'dashboard_home' %}aria-current="page"{% endif %}><svg aria-hidden="true"><use href="#i-grid"/></svg>Overview</a>
+        <a href="{% url 'dashboard_projects_view' %}" {% if page == 'dashboard_projects_view' or page == 'add_project' or page == 'edit_project' %}aria-current="page"{% endif %}><svg aria-hidden="true"><use href="#i-folder"/></svg>Projects</a>
+        <a href="{% url 'messages' %}" {% if page == 'messages' or page == 'message_detail' %}aria-current="page"{% endif %}><svg aria-hidden="true"><use href="#i-chat"/></svg>Messages</a>
+        <a href="{% url 'subscriptions' %}" {% if page == 'subscriptions' %}aria-current="page"{% endif %}><svg aria-hidden="true"><use href="#i-mail"/></svg>Subscriptions</a>
+        <a href="{% url 'testimonials' %}" {% if page == 'testimonials' %}aria-current="page"{% endif %}><svg aria-hidden="true"><use href="#i-quote"/></svg>Testimonials</a>
+      </nav>
+      <div class="dash-side__foot dash-nav">
+        <a href="{% url 'index' %}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-external"/></svg>View site</a>
+        <form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button type="submit"><svg aria-hidden="true"><use href="#i-logout"/></svg>Log out</button></form>
+      </div>
+    </aside>
+    <div class="dash-scrim" id="dash-scrim"></div>
+
+    <div class="dash-main">
+      <header class="dash-head">
+        <button class="icon-btn icon-btn--outline dash-menu" id="dash-menu" type="button" aria-controls="dash-side" aria-expanded="false" aria-label="Open navigation"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+        <h1>{% block heading %}Dashboard{% endblock %}</h1>
+        <span class="dash-user">{{ request.user.username }}</span>
+        {% block head_actions %}{% endblock %}
+        <button class="icon-btn icon-btn--outline" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+          <svg class="theme-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+          <svg class="theme-sun" aria-hidden="true" hidden><use href="#i-sun"/></svg>
+        </button>
+      </header>
+      <main class="dash-content">
+        {% if messages %}<div class="flash-list" role="status" aria-live="polite">{% for m in messages %}<p class="flash flash--{{ m.level_tag }}">{{ m }}</p>{% endfor %}</div>{% endif %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  {% endwith %}
+  <script src="{% static 'assets/portfolio.js' %}" defer></script>
+  {% block scripts %}{% endblock %}
+  <script src="{% static 'assets/dashboard.js' %}" defer></script>
+</body>
+</html>
